@@ -29,7 +29,7 @@ const realtorSchema = new mongoose.Schema(
       sponsorCid: {
       type: String,
       required: true,
-      unique: true,
+      
     },
     avatar:{
       type: String,
