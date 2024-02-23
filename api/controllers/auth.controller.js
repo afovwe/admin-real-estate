@@ -1,7 +1,7 @@
 import Realtor from "../models/realtor.model.js";
 import { v4 as uuidv4 } from 'uuid';
 import bcryptjs from 'bcryptjs';
-
+import { errorHandler } from '../utils/errors.js'; // Import errorHandler function
 
 export const signup = async (req, res, next) => {
    const { username, email, password, phoneNumber, sponsorCid } = req.body;
@@ -9,19 +9,19 @@ export const signup = async (req, res, next) => {
    try {
       // Check if any required field is missing or empty
       if (!username || username === '') {
-         throw { statusCode: 400, message: "Username is required" };
+         throw errorHandler(400, "Username is required"); // Pass the error message directly to errorHandler
       }
       if (!email || email === '') {
-         throw { statusCode: 400, message: "Email is required" };
+         throw errorHandler(400, "Email is required"); // Pass the error message directly to errorHandler
       }
       if (!password || password === '') {
-         throw { statusCode: 400, message: "Password is required" };
+         throw errorHandler(400, "Password is required"); // Pass the error message directly to errorHandler
       }
       if (!phoneNumber || phoneNumber === '') {
-         throw { statusCode: 400, message: "Phone number is required" };
+         throw errorHandler(400, "Phone number is required"); // Pass the error message directly to errorHandler
       }
       if (!sponsorCid || sponsorCid === '') {
-         throw { statusCode: 400, message: "Sponsor CID is required" };
+         throw errorHandler(400, "Sponsor CID is required"); // Pass the error message directly to errorHandler
       }
 
       // Generate unique realtorCid
