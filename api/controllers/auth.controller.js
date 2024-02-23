@@ -1,7 +1,11 @@
 import Realtor from "../models/realtor.model.js";
 import { v4 as uuidv4 } from 'uuid';
+import crypto from 'crypto';
 import bcryptjs from 'bcryptjs';
 import { errorHandler } from '../utils/errors.js'; // Import errorHandler function
+import { sendVerificationEmail } from '../utils/emailSender.js'; // Adjust the path as per your project structure
+
+
 
 export const signup = async (req, res, next) => {
    const { username, email, password, phoneNumber, sponsorCid } = req.body;
@@ -41,6 +45,11 @@ export const signup = async (req, res, next) => {
 
       // Save the new realtor to the database
       await newRealtor.save();
+
+      // After saving to the database, send verification email
+      const { code, expiryTimestamp } = generateVerificationCode(); // Generate verification code and expiry timestamp
+      await sendVerificationEmail(email, code, 'signup'); // Send verification email
+
       res.json('Sign up successful!!!');
    } catch (error) {
       // Pass the error to the error-handling middleware
@@ -69,3 +78,11 @@ function getDuplicateKeyErrorMessage(keyValue) {
    // Handle other duplicate key errors
    return "Duplicate key error";
 }
+
+// When generating a verification code, also calculate the expiry timestamp
+export const generateVerificationCode = () => {
+  const randomBytes = crypto.randomBytes(2);
+  const code = (randomBytes[0] << 8) | randomBytes[1];
+  const expiryTimestamp = Date.now() + (5 * 60 * 1000); // Code expires in 5 minutes
+  return { code: (code % 9000) + 1000, expiryTimestamp };
+};
