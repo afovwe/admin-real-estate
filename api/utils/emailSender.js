@@ -1,8 +1,9 @@
-// utils/emailSender.js
-
 import nodemailer from 'nodemailer';
 import crypto from 'crypto';
+import dotenv from 'dotenv';
 
+// Load environment variables from .env file
+dotenv.config();
 
 // Send mail function
 export const sendVerificationEmail = (toEmail, verificationCode, action) => {
@@ -19,14 +20,15 @@ export const sendVerificationEmail = (toEmail, verificationCode, action) => {
   // Calculate the activation link
   const encodedEmail = encodeURIComponent(toEmail);
   const encodedverificationCode = encodeURIComponent(verificationCode)  
-  const activationLink = `https://realtor-express-ed778a93d1ca.herokuapp.com/verify-by-link?email=${encodedEmail}&verificationCode=${encodedverificationCode}`;
+  //const activationLink = `https://realtor-express-ed778a93d1ca.herokuapp.com/verify-by-link?email=${encodedEmail}&verificationCode=${encodedverificationCode}`;
+  const activationLink = `http://localhost:3000/api/auth/verify-by-link?email=${encodedEmail}&verificationCode=${encodedverificationCode}`;
 
   // Create a transporter using the default SMTP transport
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'realtorexpressakpadaka@gmail.com',
-      pass: 'teuhqhkhgtnqiezl'
+      user: process.env.EMAIL_USER, // Use environment variable for email
+      pass: process.env.EMAIL_PASS // Use environment variable for password
     }
   });
 

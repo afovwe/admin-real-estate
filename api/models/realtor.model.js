@@ -21,15 +21,14 @@ const realtorSchema = new mongoose.Schema(
       required: true,
       unique: true,
     },
-     realtorCid: {
+    realtorCid: {
       type: String,
       required: true,
       unique: true,
     },
-      sponsorCid: {
+    sponsorCid: {
       type: String,
       required: true,
-      
     },
     avatar:{
       type: String,
@@ -37,7 +36,18 @@ const realtorSchema = new mongoose.Schema(
     },
     isVerified: {
       type: Boolean,
-      default: false, // Initial status set to false
+      default: false,
+    },
+    verificationCode: {
+      type: String,
+    },
+    package: {
+      type: String,
+      default: 'starter',
+    },
+    expiryTimestamp: {
+      type: Number, // Expiry time in seconds
+      default: 120, // 2 minutes converted to seconds
     },
   },
   { timestamps: true }
